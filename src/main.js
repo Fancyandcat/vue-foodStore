@@ -28,7 +28,8 @@ let router = new VueRouter({
   ],
   linkActiveClass:'active'//配置配选中是class
 })
-router.push('/goods')
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

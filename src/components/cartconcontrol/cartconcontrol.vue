@@ -26,8 +26,12 @@ export default {
         }else {
             this.food.count++; 
         }
+        this.$emit("addOK",event)
       },
       removeCart() {
+        if(this.food.count<=0){
+          return false
+        }
         this.food.count--; 
       }
   }

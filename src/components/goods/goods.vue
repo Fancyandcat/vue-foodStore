@@ -8,14 +8,14 @@
                     </span>
                 </li>
             </ul>
-        </div>
+        </div>  
         <div class="foods-wrapper" ref="foodsWrapper">
             <ul>
                 <li v-for="item in goods" class="food-list food-list-hook">
                     <h1 class="title">{{item.name}}</h1>
                     <ul>
                         <li v-for="food in item.foods" class="food-item"> 
-                            <div class="icon">
+                            <div class="icon" @click="select(food,$event)">
                                 <img :src="food.icon">
                             </div>
                             <div class="content">
@@ -30,7 +30,7 @@
                                     <span v-show="food.oldPrice" class="old">￥{{food.oldPrice}}</span>
                                 </div>
                                 <div class="cartconcontrol-wrapper">
-                                    <cartconcontrol :food="food"></cartconcontrol>
+                                    <cartconcontrol :food="food" @addOK="ballOK"></cartconcontrol>
                                 </div>
                             </div>
                         </li>
@@ -38,7 +38,8 @@
                 </li>
             </ul>
         </div>
-        <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+        <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" @submitOK="submitData" ref="shopcartBall"></shopcart>
+        <food :food="selectFood" ref="goSelectFood" @addOK="ballOK"></food>
     </div>
 </template>
 
@@ -46,7 +47,7 @@
 import BScroll from 'better-scroll'
 import shopcart from '../shopcart/shopcart.vue'
 import cartconcontrol from '../cartconcontrol/cartconcontrol.vue'
-
+import food from '../food/food.vue'
 
 const ERR_OK = 0
 export default {
@@ -62,7 +63,8 @@ export default {
 
           },
           listHeight:[],
-          scrollY:0
+          scrollY:0,
+          selectFood:{}
       }
   },
   created() {
@@ -118,6 +120,22 @@ export default {
            let el =  foodList[index]
            console.log(el)
            this.foodsScroll.scrollToElement(el,300)
+       },
+       submitData(data) {
+        //    将此处替换成ajax即可实现数据发送
+           console.log(data)
+           //实现页面的重定向
+           this.$router.push('/seller')
+       },
+       ballOK(event) {
+           console.log(111)
+           this.$refs.shopcartBall.drop(event.target)
+       },
+       select(food,event) {
+           console.log(food)
+           console.log(event)
+           this.selectFood = food
+           this.$refs.goSelectFood.show()
        }
    },
   computed:{
@@ -146,7 +164,8 @@ export default {
    },
    components:{
        shopcart,
-       cartconcontrol
+       cartconcontrol,
+       food
    }
 }
 </script>
