@@ -28,6 +28,8 @@ let router = new VueRouter({
   ],
   linkActiveClass:'active'//配置配选中是class
 })
+// 初始化指向路由
+router.push('/goods')
 
 
 /* eslint-disable no-new */
