@@ -86,12 +86,12 @@ export default {
        _initScroll() {
            this.menuScroll = new BScroll(this.$refs.menuWrapper,{
                click:true,
-            //    preventDefault:false
+               preventDefault:false
            })
            this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{
                click:true,
                probeType:3,
-            //    preventDefault:false
+               preventDefault:false
                
            })
 
@@ -118,7 +118,7 @@ export default {
            }
            let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')
            let el =  foodList[index]
-           console.log(el)
+        //    console.log(el)
            this.foodsScroll.scrollToElement(el,300)
        },
        submitData(data) {
