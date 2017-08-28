@@ -49,7 +49,7 @@
                 </ul>
             </div>
             <split></split>
-            <div class="pics">
+            <!--<div class="pics">
                 <h1 class="title">商家实景</h1>
                 <div class="pic-wrapper" ref='picwrapper'>
                     <ul class="pic-list" ref="piclist">
@@ -58,7 +58,7 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
 </template>
@@ -83,19 +83,19 @@ export default {
     })
 	
   },
-  mounted() {
-	  if(this.seller.pics){
-		let picW = 120
-		let margin = 6
-		let width = (picW + margin)*this.seller.pics.length
-		this.$refs.piclist.style.width = width + 'px'
-		this.$nextTick(()=>{
-			this.picscroll = new BScroll(this.$refs.picwrapper,{
-				scrollX:true
-			})
-		})
-	}
-  },
+//   mounted() {
+// 	  if(this.seller.pics){
+// 		let picW = 120
+// 		let margin = 6
+// 		let width = (picW + margin)*this.seller.pics.length
+// 		this.$refs.piclist.style.width = width + 'px'
+// 		this.$nextTick(()=>{
+// 			this.picscroll = new BScroll(this.$refs.picwrapper,{
+// 				scrollX:true
+// 			})
+// 		})
+// 	}
+//   },
   components:{
       star,
       split
@@ -200,7 +200,7 @@ export default {
               .text
                 font-size:14px
                 margin-left:6px
-	  .pics
+	  /*.pics
 		padding:18px
 		.title
 		  margin-bottom:8px
@@ -216,6 +216,6 @@ export default {
 		  .pic-item
 		    display:inline-block
 			margin-right:6px
-			width:120px 
+			width:120px */
   
 </style>
