@@ -1,5 +1,6 @@
 <template>
     <div class="goods">
+        <!--菜单列表-->
         <div class="menu-wrapper" ref="menuWrapper">
             <ul>
                 <li v-for="(item,index) in goods" class="menu-item" :class="{'current':index === currentIndex}" @click="selectIndex(index,$event)">
@@ -9,6 +10,7 @@
                 </li>
             </ul>
         </div>  
+        <!--菜品列表-->
         <div class="foods-wrapper" ref="foodsWrapper">
             <ul>
                 <li v-for="item in goods" class="food-list food-list-hook">
@@ -44,12 +46,16 @@
 </template>
 
 <script>
+// 商品组件 购物车功能 利用better-scroll插件实现左右菜单列表联动
+
+// 引入better-scroll插件 购物车组件 数量框组件 食物组件
 import BScroll from 'better-scroll'
 import shopcart from '../shopcart/shopcart.vue'
 import cartconcontrol from '../cartconcontrol/cartconcontrol.vue'
 import food from '../food/food.vue'
 
-const ERR_OK = 0
+const ERR_OK = 0//模仿后台数据状态码验证使用
+
 export default {
   props:{
       seller:{
@@ -59,88 +65,118 @@ export default {
   },
   data() {
       return {
-          goods:{
-
-          },
-          listHeight:[],
-          scrollY:0,
+          goods:{},
+          listHeight:[],//左右菜单列表联动-存高度
+          scrollY:0,//左右菜单列表联动-默认滚动高度
           selectFood:{}
       }
   },
   created() {
-      this.classMap = ['decrease','discount','special','invoice','guarantee']
+      this.classMap = ['decrease','discount','special','invoice','guarantee']//控制类名实现不同icon 通过数据的type
+     
+      //  数据请求
       this.$http.get('/api/goods').then((res) => {
-        // console.log(JSON.parse(res.bodyText))
+
         if(JSON.parse(res.bodyText).errno === ERR_OK){
+
           this.goods = JSON.parse(res.bodyText).data
+
           this.$nextTick(()=>{
+
             this._initScroll()
+
             this._calclateHeight()
+
           })
         }
       },() => {
+
         console.log('error')
+
       })
    },
   methods:{
+      // 加‘_’为私有方法，外部请勿调用 
+      // 初始化better scroll实例，完成配置
        _initScroll() {
            this.menuScroll = new BScroll(this.$refs.menuWrapper,{
-               click:true,
-               preventDefault:false
+                // 为bscroll配置参数 
+               click:true,// 接受外部点击
+               preventDefault:false// 取消默认
+
            })
            this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{
+
                click:true,
-               probeType:3,
+               probeType:3,// 开启滚动事件监听
                preventDefault:false
                
            })
 
+           // 监听菜品列表滚动事件    
            this.foodsScroll.on('scroll',(pos) =>{
-               this.scrollY = Math.abs(~~pos.y)
-                // console.log(Math.abs(~~pos.y))
+
+               this.scrollY = Math.abs(~~pos.y)//菜品列表滚动高度
+
            })
-        // console.log(this.$refs.menuWrapper)
+        
        },
+       // 计算菜品列表各个子列表高度 并存起来
        _calclateHeight() {
-        //    console.log(this.$refs.foodsWrapper.getElementsByClassName('food-list-hook'))
+
            let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')
+
            let height = 0
+
            this.listHeight.push(height)
+
            for(let i = 0;i<foodList.length;i++){
+
                height += foodList[i].clientHeight;
+
                this.listHeight.push(height)
            }
-        //    console.log(this.listHeight)
+
        },
+       // 使用bsroll 的api将菜品列表滚动到点击菜单列表对应的index子标签
        selectIndex(index,event) {
+
            if(!event._constructed){
+
                return;
+
            }
+
            let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')
+
            let el =  foodList[index]
-        //    console.log(el)
+
            this.foodsScroll.scrollToElement(el,300)
        },
+       // 实现提交按钮后的逻辑  
        submitData(data) {
-        //    将此处替换成ajax即可实现数据发送
-           console.log(data)
-           //实现页面的重定向
+           // TODO 确认提交之后  
            this.$router.push('/seller')
        },
+       // 监听food组件 实现购物车小球动画
        ballOK(event) {
-           console.log(111)
+
            this.$refs.shopcartBall.drop(event.target)
        },
+       // 监听子组件
        select(food,event) {
-           console.log(food)
-           console.log(event)
+
            this.selectFood = food
+
            this.$refs.goSelectFood.show()
        }
    },
   computed:{
+       // 配合selectIndex方法 返回下标
        currentIndex() {
+
            for(let i = 0;i<this.listHeight.length;i++){
+               
                let height = this.listHeight[i]
                let height1 = this.listHeight[i+1]
                if(!height1 || (this.scrollY>=height && this.scrollY<height1)){
@@ -149,9 +185,13 @@ export default {
            }
            return 0
        },
+       // 遍历所有foods对象 找到所有有count属性的对象 为购物车组件准备参数
        selectFoods() {
+
            let foods = []
+
            for(let i = 0;i<this.goods.length;i++){
+
                var temp = this.goods[i].foods
                for(let j = 0;j<temp.length;j++){
                    if(temp[j].count){
@@ -163,6 +203,7 @@ export default {
        }
    },
    components:{
+       
        shopcart,
        cartconcontrol,
        food

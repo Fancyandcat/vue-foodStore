@@ -63,12 +63,15 @@
         </div>
       </div>
     </transition>
-    
   </div>
 </template>
 
 <script>
+// 头部组件 门店信息遮罩层
+
+// 引入评分组件
 import star from '../star/star.vue'
+
 export default {
   props:{
     seller:{
@@ -78,11 +81,11 @@ export default {
   },
   data() {
     return {
-      detailShow:false
+      detailShow:false// 控制遮罩层
     }
   },
   created() {
-    this.classMap = ['decrease','discount','special','invoice','guarantee']
+    this.classMap = ['decrease','discount','special','invoice','guarantee']//控制类名实现不同icon 通过数据的type
   },
   components:{
     star

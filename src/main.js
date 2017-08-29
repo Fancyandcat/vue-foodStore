@@ -7,9 +7,9 @@ import goods from './components/goods/goods.vue'
 import seller from './components/seller/seller.vue'
 import ratings from './components/ratings/ratings.vue'
 
-
 Vue.use(VueRouter)
 Vue.use(VueResource)
+
 // 配置路由映射
 let router = new VueRouter({
   routes:[
@@ -31,11 +31,13 @@ let router = new VueRouter({
 // 初始化指向路由
 router.push('/goods')
 
-
-/* eslint-disable no-new */
+// 初始化vue实例
 new Vue({
   el: '#app',
   router,
   template:'<App/>',
   components:{App}
 })
+
+
+

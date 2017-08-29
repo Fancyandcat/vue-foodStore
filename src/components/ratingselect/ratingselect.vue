@@ -13,9 +13,13 @@
 </template>
 
 <script>
-const POSITIVE = 0
-const NEGATIVE = 1
-const All = 2
+// 过滤评论状态
+
+// 初始化状态码
+const POSITIVE = 0 // 正面评价状态码
+const NEGATIVE = 1 // 负面评价状态码
+const All = 2 // 全部评价状态码
+
 export default {
     props:{
         ratings:{
@@ -49,11 +53,11 @@ export default {
         }
     },
     methods:{
+        // 向父组件通信
         select(type,event) {
             if(!event._constructed){
                 return
             }
-            console.log("春被进")
             // 不要在子组件中修改父组件传进来的值
             this.$emit("selectT",type)
         },
@@ -65,6 +69,7 @@ export default {
         }
     },
     computed:{
+      // 显示各种类型的评论的数量  
       goodRatings() {
           let leg = 0
           this.ratings.forEach((rating) =>{

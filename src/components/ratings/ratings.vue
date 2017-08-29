@@ -45,17 +45,20 @@
 </template>
 
 <script>
+// 评论组件 评论功能
+
+// 引入打分组件 空格组件 选择评论组件 better-scroll插件 事件过滤器
 import star from '../star/star.vue'
 import split from '../split/split.vue'
 import ratingselect from '../ratingselect/ratingselect.vue'
 import BScroll from 'better-scroll'
 import {fliterDate} from '../../common/js/date.js'
 
-
-const POSITIVE = 0
-const NEGATIVE = 1
-const All = 2
-const ERR_OK = 0
+// 初始化状态码 
+const POSITIVE = 0 // 正面评价状态码
+const NEGATIVE = 1 // 负面评价状态码
+const All = 2 // 全部评价状态码
+const ERR_OK = 0 // 仿数据状态码
 
 export default {
     props:{
@@ -84,19 +87,23 @@ export default {
         ratingselect
     },
     methods:{
+        // 监听子组件 事件
         select(type) {
             this.selectType = type
             this.$nextTick( ()=>{
               this.scroll.refresh()
             })
         },
+        // 监听子组件 事件
         toggle() {
             this.onlyContent = !this.onlyContent
             this.$nextTick( ()=>{
               this.scroll.refresh()
             })
         },
+        // 控制展示状态
         needShow(type,text) {
+
           if(this.onlyContent && !text){
               return false
           }
@@ -108,21 +115,29 @@ export default {
       }
     },
     created() {
+
         this.$http.get('/api/ratings').then((res) => {
-        // console.log(JSON.parse(res.bodyText))
-        if(JSON.parse(res.bodyText).errno === ERR_OK){
-            this.ratings = JSON.parse(res.bodyText).data
-            this.$nextTick(()=>{
-                this.scroll = new BScroll(this.$refs.wrapper,{
-                    click:true
+
+            if(JSON.parse(res.bodyText).errno === ERR_OK){
+
+                this.ratings = JSON.parse(res.bodyText).data
+
+                this.$nextTick(()=>{
+
+                    this.scroll = new BScroll(this.$refs.wrapper,{
+
+                        click:true
+
+                    })
+
                 })
-            })
-        }
+                
+            }
         },() => {
-        console.log('error')
+            console.log('error')
         })
     },
-      filters:{
+    filters:{
         filterTime(time) {
             let date = new Date(time)
             return fliterDate(date,'yyyy-MM-dd hh:mm')

@@ -49,21 +49,14 @@
                 </ul>
             </div>
             <split></split>
-            <!--<div class="pics">
-                <h1 class="title">商家实景</h1>
-                <div class="pic-wrapper" ref='picwrapper'>
-                    <ul class="pic-list" ref="piclist">
-                        <li class="pic-item" v-for="pic in seller.pics">
-                            <img :src="pic" alt="">
-                        </li>
-                    </ul>
-                </div>
-            </div>-->
         </div>
     </div>
 </template>
 
 <script>
+// 商家组件 
+
+// 引入评分组件 空白格组件 better-scroll插件
 import star from '../star/star.vue'
 import split from '../split/split.vue'
 import BScroll from 'better-scroll'
@@ -77,25 +70,11 @@ export default {
   created() {
     this.classMap = ['decrease','discount','special','invoice','guarantee']
     this.$nextTick(()=>{
-        this.scroll = new BScroll(this.$refs.wrapper,{
+        this.sellerScroll = new BScroll(this.$refs.wrapper,{
             click:true
         })
     })
-	
   },
-//   mounted() {
-// 	  if(this.seller.pics){
-// 		let picW = 120
-// 		let margin = 6
-// 		let width = (picW + margin)*this.seller.pics.length
-// 		this.$refs.piclist.style.width = width + 'px'
-// 		this.$nextTick(()=>{
-// 			this.picscroll = new BScroll(this.$refs.picwrapper,{
-// 				scrollX:true
-// 			})
-// 		})
-// 	}
-//   },
   components:{
       star,
       split
@@ -200,22 +179,5 @@ export default {
               .text
                 font-size:14px
                 margin-left:6px
-	  /*.pics
-		padding:18px
-		.title
-		  margin-bottom:8px
-		  line-height:14px
-		  color:rgb(7,17,27)
-		  font-size:14px
-		.pic-wrapper
-		  width:100%
-		  overflow:hidden
-		  white-space:nowrap
-		.pic-list
-		  font-size:0
-		  .pic-item
-		    display:inline-block
-			margin-right:6px
-			width:120px */
-  
+	  
 </style>

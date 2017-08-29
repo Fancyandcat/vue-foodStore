@@ -5,10 +5,11 @@
 </template>
 
 <script>
-const LENGTH = 5
-const CLE_ON = 'on'
-const CLE_OFF = 'off'
-const CLE_HALF = 'half'
+// 初始化状态码
+const LENGTH = 5 // 星星个数
+const CLE_ON = 'on' // 满分
+const CLE_OFF = 'off' // 空心
+const CLE_HALF = 'half' // 半心
 export default {
   props:{
       size:{
@@ -19,9 +20,11 @@ export default {
       }
   },
   computed:{
+      // 根据父组件的参数设置class
       starType() {
           return 'star-' + this.size
       },
+      // calss数组
       itemClasss() {
         let result = []
         // 向下取0.5的倍数

@@ -9,6 +9,9 @@
 </template>
 
 <script>
+// 计数器组件
+
+// 引入vue组件
 import Vue from 'vue'
 export default {
   props:{
@@ -17,21 +20,27 @@ export default {
       }
   },
   methods:{
+      // 实现add功能
       addCart() {
-        console.log(1)
+
         if(!this.food.count){
-            console.log(this.food)
+            
             Vue.set(this.food,'count',1)
-            // this.food.count =1
+
         }else {
+
             this.food.count++; 
+
         }
         this.$emit("addOK",event)
       },
+      // 实现remove功能
       removeCart() {
+
         if(this.food.count<=0){
           return false
         }
+        
         this.food.count--; 
       }
   }

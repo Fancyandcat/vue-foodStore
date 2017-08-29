@@ -57,6 +57,9 @@
 </template>
 
 <script>
+// 商品详情页 过滤评论
+
+//引入 better-scroll插件 数量框组件 空格组件 选择评论组件 vue组件
 import BScroll from 'better-scroll'
 import Vue from 'vue'
 import {fliterDate} from '../../common/js/date.js'
@@ -64,9 +67,10 @@ import cartconcontrol from '../cartconcontrol/cartconcontrol.vue'
 import split from '../split/split.vue'
 import ratingselect from '../ratingselect/ratingselect.vue'
 
-const POSITIVE = 0
-const NEGATIVE = 1
-const All = 2
+// 初始化代码状态
+const POSITIVE = 0 // 正面评价状态码
+const NEGATIVE = 1 // 负面评价状态码
+const All = 2 // 全部评价状态码
 
 export default {
   props:{
@@ -87,40 +91,50 @@ export default {
       }
   },
   methods: {
+      // 控制组件的展示与隐藏
       show() {
+
           this.showFlag = true
           this.selectType = All
           this.onlyContent = false
+
           this.$nextTick(() =>{
+
             if(!this.scroll){
-              console.log(this.$refs.wrapper)
               this.scroll = new BScroll(this.$refs.wrapper,{
                   click:true
               })
             }
           })
       },
+      // 为food对象设置count属性
       addFirst(event) {
           if(!event._constructed){
               return
           }
           Vue.set(this.food,'count',1)
       },
+      // 与父组件通信,告知可以调用小球动画
       ballOK() {
           this.$emit("addOK",event)
       },
+      // 改变评论状态码(根据状态码)   
       select(type) {
+
           this.selectType = type
           this.$nextTick( ()=>{
               this.scroll.refresh()
           })
       },
+      // 改变评论状态码(根据有无内容)
       toggle() {
+
           this.onlyContent = !this.onlyContent
           this.$nextTick( ()=>{
               this.scroll.refresh()
           })
       },
+      // 实现评论内容的过滤展示
       needShow(type,text) {
           if(this.onlyContent && !text){
               return false
@@ -134,6 +148,7 @@ export default {
 
   },
   filters:{
+      // 过滤器
       filterTime(time) {
           let date = new Date(time)
           return fliterDate(date,'yyyy-MM-dd hh:mm')

@@ -59,21 +59,19 @@
 </template>
 
 <script>
-import cartconcontrol from '../cartconcontrol/cartconcontrol.vue'
-import BScroll from 'better-scroll'
+// 购物车组件 购物车功能 购物小球动画
 
+// 引入better-scroll插件 数量框组件
+import BScroll from 'better-scroll'
+import cartconcontrol from '../cartconcontrol/cartconcontrol.vue'
 
 export default {
+  // 依赖父组件提供选择食品 配送费 最低配送费
   props:{
       selectFoods:{
           type:Array,
           default() {
-              return [
-                  {
-                      price:10,
-                      count:1
-                  }
-              ]
+              return []
           }
       },
       deliveryPrice:{
@@ -104,54 +102,75 @@ export default {
       }
   },
   computed:{
+     // 计算总价
      totalPrice() {
+
          let sum = 0
          this.selectFoods.forEach((food) =>{
              sum += food.price*food.count
          })
          return sum
      },
+     // 计算总数量
      totalCount() {
+
          let sum = 0
          this.selectFoods.forEach((food) =>{
              sum += food.count
          })
          return sum
      },
+     // 计算是否满足起送价
      payDesc() {
+
         if(this.totalPrice === 0){
+
             this.tagOff = false
             return `￥${this.minPrice}元起送`
+
         }else if(this.totalPrice < this.minPrice){
+
             let diff = this.minPrice - this.totalPrice
             this.tagOff = false
             return `还差￥${diff}元起送`
+
         }else {
+
             this.tagOff = true
             return '去结算'
         }
      },
+     // 根据总价和起送价完成class动态绑定
      payClass() {
+
          if(this.totalPrice < this.minPrice){
+
              return "not-enough"
+
          }else {
+
              return "enough"
+
          }
      },
+     // 控制购物车商品展示列表的展示与隐藏
      listShow() {
          if(this.totalCount <= 0){
+
              this.fold = true
              return false
          }else {
              if(!this.fold){
+
                  this.$nextTick(()=>{
+
                      if(!this.scroll){
-                         console.log("初始化")
+
                         this.scroll = new BScroll(this.$refs.listWrapper,{
                             click:true
                         })
                     }else{
-                         console.log("刷新")
+
                          this.scroll.refresh()
                     }
                  })
@@ -161,13 +180,19 @@ export default {
      }
   },
   methods:{
+     // 将总价传送给父组件
      sub() {
+
          if(!this.tagOff){
+
              return false;
+
          }else {
+
              this.$emit("submitOK",this.totalPrice)
          }
      },
+     // 小球动画 --- start
      drop(el){ //抛物
         for(let i=0;i<this.balls.length;i++){
             let ball= this.balls[i];
@@ -212,6 +237,8 @@ export default {
         el.style.display = 'none';
        }
      },
+     // 小球动画 --- end
+     // 控制购物车商品展示列表的展示与隐藏 
      toggleList() {
          if(!this.totalCount){
              return;
@@ -219,6 +246,7 @@ export default {
          this.fold = !this.fold
          this.maskShow = !this.maskShow
      },
+     // 清空按钮
      empty() {
          this.selectFoods.forEach((food) =>{
              food.count = 0
