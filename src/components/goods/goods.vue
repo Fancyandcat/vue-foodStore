@@ -102,14 +102,14 @@ export default {
            this.menuScroll = new BScroll(this.$refs.menuWrapper,{
                 // 为bscroll配置参数 
                click:true,// 接受外部点击
-               preventDefault:false// 取消默认
+            //    preventDefault:false// 取消默认
 
            })
            this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{
 
                click:true,
                probeType:3,// 开启滚动事件监听
-               preventDefault:false
+            //    preventDefault:false
                
            })
 
@@ -156,7 +156,9 @@ export default {
        // 实现提交按钮后的逻辑  
        submitData(data) {
            // TODO 确认提交之后  
-           this.$router.push('/seller')
+           alert('一共消费' + data + '元')
+           
+
        },
        // 监听food组件 实现购物车小球动画
        ballOK(event) {
